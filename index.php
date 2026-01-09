@@ -7,6 +7,12 @@
 
 session_start();
 
+// Incluir configuración y conexión a BD
+include 'includes/config.php';
+
+// Incluir funciones
+include 'includes/funciones.php';
+
 // Si el usuario ya está logeado, redirigir
 if (isset($_SESSION['usuario_id'])) {
     if ($_SESSION['rol'] === 'administrador') {
@@ -20,17 +26,15 @@ if (isset($_SESSION['usuario_id'])) {
 // Procesar login
 $login_error = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
-    require_once 'includes/config.php';
-    require_once 'business/UsuarioManager.php';
+    $usuario = $_POST['usuario'];
+    $contraseña = $_POST['contraseña'];
+    $resultado_login = iniciarSesion($usuario, $contraseña);
 
-    $usuarioManager = new UsuarioManager($conexion);
-    $resultado = $usuarioManager->login($_POST['usuario'] ?? '', $_POST['contraseña'] ?? '');
-
-    if ($resultado['success']) {
-        $_SESSION['usuario_id'] = $resultado['usuario']['id'];
-        $_SESSION['usuario'] = $resultado['usuario']['usuario'];
-        $_SESSION['rol'] = $resultado['usuario']['rol'];
-        $_SESSION['email'] = $resultado['usuario']['email'];
+    if (isset($resultado_login['exito']) && $resultado_login['exito']) {
+        $_SESSION['usuario_id'] = $resultado_login['usuario']['id'];
+        $_SESSION['usuario'] = $resultado_login['usuario']['usuario'];
+        $_SESSION['rol'] = $resultado_login['usuario']['rol'];
+        $_SESSION['email'] = $resultado_login['usuario']['email'];
 
         if ($_SESSION['rol'] === 'administrador') {
             header('Location: admin/dashboard.php');
@@ -39,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
         }
         exit;
     } else {
-        $login_error = implode(', ', $resultado['errores']);
+        $login_error = $resultado_login['error'];
     }
 }
 
@@ -47,23 +51,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['login'])) {
 $registro_error = '';
 $registro_success = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registro'])) {
-    require_once 'includes/config.php';
-    require_once 'business/UsuarioManager.php';
+    $usuario = $_POST['usuario'];
+    $email = $_POST['email'];
+    $contraseña = $_POST['contraseña'];
+    $registro_error = registrarUsuario($usuario, $email, $contraseña); // Asegúrate de que esta función esté definida en funciones.php
 
-    $usuarioManager = new UsuarioManager($conexion);
-    $resultado = $usuarioManager->registrar(
-        $_POST['usuario'] ?? '',
-        $_POST['email'] ?? '',
-        $_POST['contraseña'] ?? '',
-        $_POST['contraseña_confirm'] ?? '',
-        $_POST['telefono'] ?? '',
-        $_POST['direccion'] ?? ''
-    );
-
-    if ($resultado['success']) {
-        $registro_success = $resultado['mensaje'];
-    } else {
-        $registro_error = implode(', ', $resultado['errores']);
+    if (empty($registro_error)) {
+        $registro_success = 'Registro exitoso. Puedes iniciar sesión.';
     }
 }
 ?>
@@ -74,189 +68,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['registro'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tienda de Zapatillas - Login</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .container {
-            display: flex;
-            width: 100%;
-            max-width: 1000px;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            overflow: hidden;
-        }
-
-        .form-section {
-            flex: 1;
-            padding: 40px;
-            display: none;
-        }
-
-        .form-section.active {
-            display: block;
-        }
-
-        .brand {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-
-        .brand h1 {
-            color: #667eea;
-            font-size: 28px;
-            margin-bottom: 5px;
-        }
-
-        .brand p {
-            color: #999;
-            font-size: 14px;
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 8px;
-            color: #333;
-            font-weight: 500;
-        }
-
-        input,
-        textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-        }
-
-        input:focus,
-        textarea:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        button {
-            width: 100%;
-            padding: 12px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-
-        button:hover {
-            background: #5568d3;
-        }
-
-        .toggle-form {
-            text-align: center;
-            margin-top: 20px;
-            color: #666;
-        }
-
-        .toggle-form a {
-            color: #667eea;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: 600;
-        }
-
-        .toggle-form a:hover {
-            text-decoration: underline;
-        }
-
-        .error {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #f5c6cb;
-        }
-
-        .success {
-            background: #d4edda;
-            color: #155724;
-            padding: 12px;
-            border-radius: 5px;
-            margin-bottom: 20px;
-            border: 1px solid #c3e6cb;
-        }
-
-        .info-section {
-            flex: 1;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            padding: 40px;
-            color: white;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .info-section h2 {
-            font-size: 32px;
-            margin-bottom: 20px;
-        }
-
-        .info-section p {
-            font-size: 16px;
-            line-height: 1.6;
-            margin-bottom: 15px;
-        }
-
-        .demo-info {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 20px;
-            border-radius: 5px;
-            margin-top: 30px;
-        }
-
-        .demo-info h3 {
-            margin-bottom: 10px;
-        }
-
-        .demo-info p {
-            font-size: 14px;
-            margin-bottom: 5px;
-        }
-
-        @media (max-width: 768px) {
-            .container {
-                flex-direction: column;
-            }
-
-            .info-section {
-                display: none;
-            }
-
-            .form-section {
-                padding: 30px 20px;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="assets/css/styles-login.css">
 </head>
 
 <body>
