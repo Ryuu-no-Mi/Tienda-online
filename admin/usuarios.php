@@ -1,8 +1,4 @@
 <?php
-/**
- * Gestión de usuarios - Admin
- * CAPA CLIENTE
- */
 
 require_once __DIR__ . '/../business/UsuarioManager.php';
 
@@ -68,7 +64,8 @@ if ($accion === 'crear') {
     $contenido = mostrarListadoUsuarios($usuarioManager->obtenerTodos());
 }
 
-function mostrarListadoUsuarios($usuarios) {
+function mostrarListadoUsuarios($usuarios)
+{
     $html = '<h2>Gestión de Usuarios</h2>';
     $html .= '<a href="?pagina=usuarios&accion=crear" class="btn-nuevo">+ Crear Usuario</a>';
 
@@ -112,7 +109,8 @@ function mostrarListadoUsuarios($usuarios) {
     return $html;
 }
 
-function mostrarFormularioUsuario($accion, $usuario = null) {
+function mostrarFormularioUsuario($accion, $usuario = null)
+{
     $html = '<h2>' . ($accion === 'crear' ? 'Crear Usuario' : 'Editar Usuario') . '</h2>';
 
     if (isset($_SESSION['errores'])) {
@@ -175,4 +173,3 @@ function mostrarFormularioUsuario($accion, $usuario = null) {
 
     return $html;
 }
-?>
