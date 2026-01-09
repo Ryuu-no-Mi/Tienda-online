@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Panel administrador - Dashboard
  * CAPA CLIENTE
@@ -31,7 +32,8 @@ switch ($pagina) {
         $contenido = generarPaginaInicio();
 }
 
-function generarPaginaInicio() {
+function generarPaginaInicio()
+{
     global $conexion;
     require_once __DIR__ . '/../business/UsuarioManager.php';
     require_once __DIR__ . '/../business/ProductoManager.php';
@@ -68,6 +70,7 @@ function generarPaginaInicio() {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -208,7 +211,8 @@ function generarPaginaInicio() {
             margin-top: 20px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -229,7 +233,9 @@ function generarPaginaInicio() {
             gap: 8px;
         }
 
-        .btn-editar, .btn-eliminar, .btn-nuevo {
+        .btn-editar,
+        .btn-eliminar,
+        .btn-nuevo {
             padding: 8px 12px;
             border: none;
             border-radius: 3px;
@@ -283,7 +289,9 @@ function generarPaginaInicio() {
             color: #2c3e50;
         }
 
-        input, textarea, select {
+        input,
+        textarea,
+        select {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
@@ -292,7 +300,9 @@ function generarPaginaInicio() {
             font-family: inherit;
         }
 
-        input:focus, textarea:focus, select:focus {
+        input:focus,
+        textarea:focus,
+        select:focus {
             outline: none;
             border-color: #3498db;
             box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
@@ -374,6 +384,7 @@ function generarPaginaInicio() {
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="header-info">
@@ -401,4 +412,5 @@ function generarPaginaInicio() {
         </div>
     </div>
 </body>
+
 </html>

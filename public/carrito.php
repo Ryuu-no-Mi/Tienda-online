@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Carrito de compras - Cliente
  * CAPA CLIENTE
@@ -45,6 +46,7 @@ $cantidad_carrito = count($carrito);
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -198,7 +200,8 @@ $cantidad_carrito = count($carrito);
             border-collapse: collapse;
         }
 
-        th, td {
+        th,
+        td {
             padding: 15px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -372,12 +375,14 @@ $cantidad_carrito = count($carrito);
                 font-size: 12px;
             }
 
-            th, td {
+            th,
+            td {
                 padding: 10px;
             }
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="header-content">
@@ -479,4 +484,5 @@ $cantidad_carrito = count($carrito);
         <?php endif; ?>
     </div>
 </body>
+
 </html>

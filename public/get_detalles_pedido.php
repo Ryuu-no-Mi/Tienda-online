@@ -1,4 +1,5 @@
 <?php
+
 /**
  * AJAX - Obtener detalles del pedido
  * CAPA CLIENTE
@@ -66,4 +67,3 @@ echo '<p><strong>Subtotal:</strong> ' . formatearPrecio($pedido['total']) . '</p
 echo '<p><strong>IVA (21%):</strong> ' . formatearPrecio($pedido['total'] * 0.21) . '</p>';
 echo '<p style="font-size: 18px; color: #27ae60;"><strong>Total:</strong> ' . formatearPrecio($pedido['total'] * 1.21) . '</p>';
 echo '</div>';
-?>

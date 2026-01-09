@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Catálogo de productos - Cliente
  * CAPA CLIENTE
@@ -29,6 +30,7 @@ $cantidad_carrito = count($carrito);
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -275,6 +277,7 @@ $cantidad_carrito = count($carrito);
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="header-content">
@@ -321,8 +324,8 @@ $cantidad_carrito = count($carrito);
                             <div class="producto-descripcion"><?php echo escapar(substr($producto['descripcion'] ?? '', 0, 80)); ?></div>
                             <div class="producto-precio"><?php echo formatearPrecio($producto['precio']); ?></div>
                             <div class="producto-stock">
-                                Stock: 
-                                <?php 
+                                Stock:
+                                <?php
                                 if ($producto['stock'] > 0) {
                                     echo '<span style="color: #27ae60; font-weight: 600;">' . $producto['stock'] . '</span>';
                                 } else {
@@ -344,4 +347,5 @@ $cantidad_carrito = count($carrito);
         <?php endif; ?>
     </div>
 </body>
+
 </html>

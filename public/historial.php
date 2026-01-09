@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Historial de pedidos - Cliente
  * CAPA CLIENTE
@@ -31,6 +32,7 @@ if ($ver_detalles) {
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -319,7 +321,8 @@ if ($ver_detalles) {
             margin-top: 15px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -360,6 +363,7 @@ if ($ver_detalles) {
         }
     </style>
 </head>
+
 <body>
     <header>
         <div class="header-content">
@@ -466,4 +470,5 @@ if ($ver_detalles) {
         }
     </script>
 </body>
+
 </html>

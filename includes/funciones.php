@@ -1,11 +1,13 @@
 <?php
+
 /**
  * Funciones auxiliares globales
  * CAPA CLIENTE
  */
 
 // Verificar si el usuario está autenticado
-function verificarAutenticacion() {
+function verificarAutenticacion()
+{
     if (!isset($_SESSION['usuario_id'])) {
         header('Location: /Tienda online/index.php');
         exit;
@@ -13,7 +15,8 @@ function verificarAutenticacion() {
 }
 
 // Verificar si el usuario es administrador
-function verificarAdmin() {
+function verificarAdmin()
+{
     verificarAutenticacion();
     if ($_SESSION['rol'] !== 'administrador') {
         header('Location: /Tienda online/public/catalogo.php');
@@ -22,7 +25,8 @@ function verificarAdmin() {
 }
 
 // Verificar si el usuario es cliente
-function verificarCliente() {
+function verificarCliente()
+{
     verificarAutenticacion();
     if ($_SESSION['rol'] !== 'cliente') {
         header('Location: /Tienda online/admin/dashboard.php');
@@ -31,29 +35,34 @@ function verificarCliente() {
 }
 
 // Cerrar sesión
-function cerrarSesion() {
+function cerrarSesion()
+{
     session_destroy();
     header('Location: /Tienda online/index.php');
     exit;
 }
 
 // Escapar salida HTML
-function escapar($texto) {
+function escapar($texto)
+{
     return htmlspecialchars($texto, ENT_QUOTES, 'UTF-8');
 }
 
 // Formatear precio
-function formatearPrecio($precio) {
+function formatearPrecio($precio)
+{
     return number_format($precio, 2, ',', '.') . '€';
 }
 
 // Obtener ruta relativa correcta
-function obtenerRutaBase() {
+function obtenerRutaBase()
+{
     return '/Tienda online/';
 }
 
 // Redirigir con mensaje
-function redirigirConMensaje($url, $tipo, $mensaje) {
+function redirigirConMensaje($url, $tipo, $mensaje)
+{
     $_SESSION['mensaje'] = $mensaje;
     $_SESSION['tipo_mensaje'] = $tipo;
     header('Location: ' . $url);
@@ -61,7 +70,8 @@ function redirigirConMensaje($url, $tipo, $mensaje) {
 }
 
 // Mostrar mensaje si existe
-function mostrarMensaje() {
+function mostrarMensaje()
+{
     if (isset($_SESSION['mensaje'])) {
         $tipo = $_SESSION['tipo_mensaje'] ?? 'info';
         $mensaje = $_SESSION['mensaje'];
@@ -71,4 +81,3 @@ function mostrarMensaje() {
     }
     return '';
 }
-?>

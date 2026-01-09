@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Confirmación de compra - Cliente
  * CAPA CLIENTE
@@ -24,6 +25,7 @@ unset($_SESSION['pedido_id']);
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -153,7 +155,8 @@ unset($_SESSION['pedido_id']);
             margin-bottom: 20px;
         }
 
-        th, td {
+        th,
+        td {
             padding: 12px;
             text-align: left;
             border-bottom: 1px solid #ddd;
@@ -229,6 +232,7 @@ unset($_SESSION['pedido_id']);
         }
     </style>
 </head>
+
 <body>
     <div class="contenedor">
         <div class="icono-exito">✅</div>
@@ -298,4 +302,5 @@ unset($_SESSION['pedido_id']);
         </div>
     </div>
 </body>
+
 </html>
